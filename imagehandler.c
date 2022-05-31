@@ -1,24 +1,25 @@
-#include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <getopt.h>
+#include "imagemodifiers.h"
 
-#include "helpers.h"
-
+/* Image compression implementation */
 int main(int argc, char *argv[])
 {
-    // Define allowable filters
-    char *filters = "bgrs";
 
-    // Get filter flag and check validity
-    char filter = getopt(argc, argv, filters);
-    if (filter == '?')
+    // Define allowable filters
+    char *flags = "cd";
+
+    // Get flag and check validity
+    char flag = getopt(argc, argv, flags);
+    if (flag == '?')
     {
         printf("Invalid filter.\n");
         return 1;
     }
 
     // Ensure only one filter
-    if (getopt(argc, argv, filters) != -1)
+    if (getopt(argc, argv, flags) != -1)
     {
         printf("Only one filter allowed.\n");
         return 2;
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
         return 3;
     }
 
-    // Remember filenames
+    // File I/O
     char *infile = argv[optind];
     char *outfile = argv[optind + 1];
 
@@ -98,27 +99,18 @@ int main(int argc, char *argv[])
     }
 
     // Filter image
-    switch (filter)
+    switch (flag)
     {
         // Blur
-        case 'b':
-            blur(height, width, image);
+        case 'c':
+            compress(height, width, image);
             break;
 
         // Grayscale
-        case 'g':
-            grayscale(height, width, image);
+        case 'd':
+            decompress(height, width, image);
             break;
 
-        // Reflection
-        case 'r':
-            reflect(height, width, image);
-            break;
-
-        // Sepia
-        case 's':
-            sepia(height, width, image);
-            break;
     }
 
     // Write outfile's BITMAPFILEHEADER
