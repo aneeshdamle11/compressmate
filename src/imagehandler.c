@@ -3,14 +3,17 @@
 #include <getopt.h>
 #include "imagemodifiers.h"
 
-/* Image compression implementation */
+/*! \brief Image compression implementation
+ *
+ * \Note Input image is 24-bit Bitmap file taken as per Microsoft doc
+ */
 int main(int argc, char *argv[])
 {
 
-    // Define allowable filters
+    /* Define allowable flags */
     char *flags = "cd";
 
-    // Get flag and check validity
+    /* Get flag and check validity */
     char flag = getopt(argc, argv, flags);
     if (flag == '?')
     {
@@ -18,14 +21,13 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // Ensure only one filter
+    /* Only one filter at a time! */
     if (getopt(argc, argv, flags) != -1)
     {
         printf("Only one filter allowed.\n");
         return 2;
     }
 
-    // Ensure proper usage
     if (argc != optind + 2)
     {
         printf("Usage: ./filter [flag] infile outfile\n");
@@ -36,28 +38,26 @@ int main(int argc, char *argv[])
     char *infile = argv[optind];
     char *outfile = argv[optind + 1];
 
-    // Open input file
-    FILE *inptr = fopen(infile, "r");
-    if (inptr == NULL)
+    FILE *inptr = fopen(infile, "r");           /* Open input file */
+    if (!inptr)
     {
         printf("Could not open %s.\n", infile);
         return 4;
     }
 
-    // Open output file
-    FILE *outptr = fopen(outfile, "w");
-    if (outptr == NULL)
+    FILE *outptr = fopen(outfile, "w");         /* Open output file */
+    if (!outptr)
     {
         fclose(inptr);
         printf("Could not create %s.\n", outfile);
         return 5;
     }
 
-    // Read infile's BITMAPFILEHEADER
+    /* Read infile's BITMAPFILEHEADER */
     BITMAPFILEHEADER bf;
     fread(&bf, sizeof(BITMAPFILEHEADER), 1, inptr);
 
-    // Read infile's BITMAPINFOHEADER
+    /* Read infile's BITMAPINFOHEADER */
     BITMAPINFOHEADER bi;
     fread(&bi, sizeof(BITMAPINFOHEADER), 1, inptr);
 
@@ -71,13 +71,13 @@ int main(int argc, char *argv[])
         return 6;
     }
 
-    // Get image's dimensions
+    // Image dimensions
     int height = abs(bi.biHeight);
     int width = bi.biWidth;
 
     // Allocate memory for image
     RGBTRIPLE(*image)[width] = calloc(height, width * sizeof(RGBTRIPLE));
-    if (image == NULL)
+    if (!image)
     {
         printf("Not enough memory to store image.\n");
         fclose(outptr);
@@ -85,20 +85,21 @@ int main(int argc, char *argv[])
         return 7;
     }
 
-    // Determine padding for scanlines
+    /* Determine padding for scanlines */
     int padding = (4 - (width * sizeof(RGBTRIPLE)) % 4) % 4;
 
-    // Iterate over infile's scanlines
+    /* Iterate over infile's scanlines */
     for (int i = 0; i < height; i++)
     {
         // Read row into pixel array
         fread(image[i], sizeof(RGBTRIPLE), width, inptr);
 
-        // Skip over padding
+        /*! IMPORTANT
+         * Skip over padding */
         fseek(inptr, padding, SEEK_CUR);
     }
 
-    // Filter image
+    /* Check flags */
     switch (flag)
     {
         // Blur
@@ -113,10 +114,12 @@ int main(int argc, char *argv[])
 
     }
 
-    // Write outfile's BITMAPFILEHEADER
+    /* Write outfile's HEADERS
+     * BITMAPFILEHEADER
+     * BITMAPINFOHEADER
+     */
     fwrite(&bf, sizeof(BITMAPFILEHEADER), 1, outptr);
 
-    // Write outfile's BITMAPINFOHEADER
     fwrite(&bi, sizeof(BITMAPINFOHEADER), 1, outptr);
 
     // Write new pixels to outfile
@@ -132,10 +135,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Free memory for image
     free(image);
 
-    // Close files
     fclose(inptr);
     fclose(outptr);
     return 0;
