@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "wavlet.h"
 
 /* Threshold for lossy compression */
 #define THRESHOLD (0)
 
 
 /* IWT algorithm implementation */
-void wavelet_transform(float *arr, int size) {
+void wavelet_transform(double *arr, int size) {
 
-    if (size == 1)
+    if (size <= 1)
         return;
 
-    float avg[size];
+    double avg[size];
     for (int i = 0; i < size / 2; ++i) {
         avg[i] = (arr[2*i] + arr[2*i + 1]) / 2;
         if (fabs(avg[i]) < THRESHOLD)
@@ -34,14 +35,14 @@ void wavelet_transform(float *arr, int size) {
 
 
 /* Decoding IWT algorithm */
-void inverse_wavelet_transform(float *arr, int size) {
+void inverse_wavelet_transform(double *arr, int size) {
 
     if (size <= 1)
         return;
     inverse_wavelet_transform(arr, size / 2);
 
     int i;
-    float temp[size];
+    double temp[size];
 
     for (i = 0; i < size/2; ++i) {
 

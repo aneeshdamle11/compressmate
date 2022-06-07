@@ -1,10 +1,9 @@
 #ifndef WAVELET_H
 #define WAVELET_H (1)
 
-void wavelet_transform(float *arr, int size);
 
-void inverse_wavelet_transform(float *arr, int size);
+void wavelet_transform(double *arr, int size);
 
-void transpose(int rows, int columns, float arr[rows][columns]);
+void inverse_wavelet_transform(double *arr, int size);
 
 #endif /* WAVELET_H */

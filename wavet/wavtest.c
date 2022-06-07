@@ -3,6 +3,10 @@
 #include "wavlet.h"
 #include "matrixmodifiers.h"
 
+#define ROW_SIZE (8)
+#define COLUMN_SIZE (8)
+
+
 /* Wavelet transform implementation */
 int main(void)
 {
@@ -24,7 +28,8 @@ int main(void)
 
     int i, j;
 
-    float arr[8][8] = {
+
+    double arr[8][8] = {
 
         {156, 159, 158, 155, 158, 156, 159, 158},
         {160, 154, 157, 158, 157, 159, 158, 158},
@@ -37,54 +42,48 @@ int main(void)
 
     };
 
+/*
+    double arr[2][2] = {
+        {156, 159},
+        {160, 154}
+    };
+*/
     printf("Original:\n");
-    print_matrix(8, 8, arr);
+    print_matrix(ROW_SIZE, COLUMN_SIZE, arr);
     putchar('\n');
 
     // Wavelet transform: row-wise
-    for (i = 0; i < 8; ++i) {
-        wavelet_transform(arr[i], 8);
+    for (i = 0; i < ROW_SIZE; ++i) {
+        wavelet_transform(arr[i], ROW_SIZE);
     }
 
-    transpose(8, 8, arr);
+    transpose(ROW_SIZE, COLUMN_SIZE, arr);
     // Wavelet transform: column-wise
-    for (i = 0; i < 8; ++i) {
-        wavelet_transform(arr[i], 8);
+    for (i = 0; i < COLUMN_SIZE; ++i) {
+        wavelet_transform(arr[i], ROW_SIZE);
     }
 
-    transpose(8, 8, arr);
+    transpose(ROW_SIZE, COLUMN_SIZE, arr);
 
     // Print transformed wavelet
     printf("\nWT:\n");
-    print_matrix(8, 8, arr);
+    print_matrix(ROW_SIZE, COLUMN_SIZE, arr);
     putchar('\n');
 
     // Inverse wavelet transform
-    transpose(8, 8, arr);
-    for (i = 0; i < 8; ++i) {
-        inverse_wavelet_transform(arr[i], 8);
+    transpose(ROW_SIZE, COLUMN_SIZE, arr);
+    for (i = 0; i < ROW_SIZE; ++i) {
+        inverse_wavelet_transform(arr[i], ROW_SIZE);
     }
-    transpose(8, 8, arr);
-    for (i = 0; i < 8; ++i) {
-        inverse_wavelet_transform(arr[i], 8);
+    transpose(ROW_SIZE, COLUMN_SIZE, arr);
+    for (i = 0; i < ROW_SIZE; ++i) {
+        inverse_wavelet_transform(arr[i], ROW_SIZE);
     }
 
     printf("\nIWT:\n");
-    print_matrix(8, 8, arr);
+    print_matrix(ROW_SIZE, COLUMN_SIZE, arr);
     putchar('\n');
  
-    exit(0);
-
-    putchar('\n');
-    putchar('z');
-    putchar('\n');
-    for (i = 0; i < 8; ++i) {
-        for (j = 0; j < 8; ++i) {
-            printf("%f\n", arr[i][j]);
-        }
-        putchar('\n');
-    }
-
     return 0;
 
 }
