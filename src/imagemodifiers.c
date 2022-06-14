@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "imagemodifiers.h"
-#include "wavlet.h"
+#include "../wavet/wavlet.h"
 
 // Copies image
 void copy_image(int height, int width, RGBTRIPLE to[height][width], RGBTRIPLE from[height][width])
@@ -190,9 +190,12 @@ void image_inverse_wavelet_transform(int height, int width,
 /* Compress image matrix */
 void compress(int height, int width, RGBTRIPLE image[height][width]) {
 
-    image_wavelet_transform(height, width, image, 'r');
-    image_wavelet_transform(height, width, image, 'g');
-    image_wavelet_transform(height, width, image, 'b');
+    image_wavelet_transform(height, width/2, image, 'r');
+    image_wavelet_transform(height, width/2, image, 'g');
+    image_wavelet_transform(height, width/2, image, 'b');
+    image_wavelet_transform(height, width/2, image + height/2, 'r');
+    image_wavelet_transform(height, width/2, image + height/2, 'g');
+    image_wavelet_transform(height, width/2, image + height/2, 'b');
 
     return;
 }
@@ -200,9 +203,12 @@ void compress(int height, int width, RGBTRIPLE image[height][width]) {
 
 void decompress(int height, int width, RGBTRIPLE image[height][width]) {
 
-    image_inverse_wavelet_transform(height, width, image, 'r');
-    image_inverse_wavelet_transform(height, width, image, 'g');
-    image_inverse_wavelet_transform(height, width, image, 'b');
+    image_inverse_wavelet_transform(height, width/2, image, 'r');
+    image_inverse_wavelet_transform(height, width/2, image, 'g');
+    image_inverse_wavelet_transform(height, width/2, image, 'b');
+    image_inverse_wavelet_transform(height, width/2, image + height/2, 'r');
+    image_inverse_wavelet_transform(height, width/2, image + height/2, 'g');
+    image_inverse_wavelet_transform(height, width/2, image + height/2, 'b');
 
     return;
 }

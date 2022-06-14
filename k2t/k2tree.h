@@ -1,29 +1,28 @@
 #ifndef K2TREE_H
 #define K2TREE_H (1)
 
-#define K_DIM (2)
+#include "linked-lists/Llist.h"
+#include "linked-lists/Tlist.h"
 
-/* node structure */
-typedef struct node {
-    int level;                      /* depth of tree */
-    int x_start, x_dest;            /* Range of x-coordinates of image */
-    int y_start, y_dest;            /* Range of y-corrdinates of image */
-    struct node* next[2*K_DIM];
-} node;
+// Node
+typedef struct k2node {
+    Tlist tlist;
+    Llist llist;
+} k2node;
 
-/* k2tree structure ADT */
-typedef node *K2Tree;
+typedef k2node *K2Tree;
 
-/*! \brief initialize k2tree
- * \param[in] K2Tree reference
+/*! \brief Compresses given file as per K2 format
+ * \param[in] image array with dimensions
  * \retval void
  */
-void init_k2tree(K2Tree* t);
+K2Tree k2_image_compress(int rows, int columns, int arr[rows][columns]);
 
-/*! brief insert k2tree
- * \param[in] K2Tree reference
- * \retval number of children
+/*! \brief Decompresses file
+ * \param[in] Input file reference
+ * \retval pointer to image
  */
-int insert_k2tree(K2Tree* t);
+//void fill_img_array(FILE *fp, int rows, int columns, int arr[rows][columns]);
+int** make_image(FILE *fp);
 
 #endif /* K2TREE_H */
