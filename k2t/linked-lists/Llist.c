@@ -7,7 +7,7 @@ void init_Llist(Llist *l) {
     *l = NULL;
 }
 
-void append_Lnode(Llist *l, int key) {
+void append_Lnode(Llist *l, uint8_t key) {
 
     Lnode *nn = (Lnode*)malloc(sizeof(Lnode));
     if (!nn) {

@@ -23,6 +23,6 @@ K2Tree k2_image_compress(int rows, int columns, int arr[rows][columns]);
  * \retval pointer to image
  */
 //void fill_img_array(FILE *fp, int rows, int columns, int arr[rows][columns]);
-int** make_image(FILE *fp);
+int** make_image(FILE *fp, int rows, int columns);
 
 #endif /* K2TREE_H */

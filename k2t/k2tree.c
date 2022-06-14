@@ -290,15 +290,13 @@ void fill_k2_tree(FILE *fp, K2Tree *T) {
         append_Lnode(&(p->llist), l_fill);
     }
 
-    traverse_Lnode(p->llist);
     printf("\nLtraverse_done\n");
-    traverse_Tnode(p->tlist);
     printf("\nTtraverse_done\n");
     putchar('\n');
 
 }
 
-int** make_image(FILE *fp) {
+int** make_image(FILE *fp, int row, int col) {
 /*
     fread(&t_count, 1, 1, fp);
     printf("%d\n", FIRST_IMG_BIT(t_count));
@@ -317,7 +315,6 @@ int** make_image(FILE *fp) {
     ptrT = p->tlist;
     ptrL = p->llist;
 
-    int row = 8, col = 8;
     int temp[row][col];
     for (int i = 0; i < row; ++i) {
         for (int j = 0; j < col; j++) {

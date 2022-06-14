@@ -4,7 +4,7 @@
 
 /* Node */
 typedef struct Lnode {
-    int key;
+    uint8_t key;
     struct Lnode* next;
 } Lnode;
 
@@ -22,7 +22,7 @@ void init_Llist(Llist *l);
  * \param[in] list ref, key to be inserted
  * \retval void
  */
-void append_Lnode(Llist *l, int key);
+void append_Lnode(Llist *l, uint8_t key);
 
 void traverse_Lnode(Llist l);
 
