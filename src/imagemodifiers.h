@@ -3,13 +3,14 @@
 
 #include "bmp.h"
 
+#define SQ_NUM (512)
+//#define DECMP (1)
+
 /*! \brief Compress image matrix
- * \Note : TODO
  */
 void compress(int height, int width, RGBTRIPLE image[height][width]);
 
 /*! \brief Decode modified image matrix to obtain original image
- * \Note : TODO
  */
 void decompress(int height, int width, RGBTRIPLE image[height][width]);
 

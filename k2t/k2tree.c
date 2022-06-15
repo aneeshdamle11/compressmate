@@ -158,8 +158,9 @@ void fill_img_array(K2Tree p, int rows, int columns, int arr[rows][columns]) {
 
     if (rows == 1 && columns == 1) {
 
-        if (ptrL == NULL)
+        if (ptrL == NULL) {
             return;
+        }
         arr[0][0] = ptrL->key;
         ptrL = ptrL->next;
         return;
@@ -168,8 +169,9 @@ void fill_img_array(K2Tree p, int rows, int columns, int arr[rows][columns]) {
     int temp[rows/2][columns/2];
 
     //fscanf(fp, "%c", (ch + i));
-    if (ptrT == NULL)
+    if (ptrT == NULL) {
         return;
+    }
     imgbit = ptrT->key;
     ptrT = ptrT->next;
 
@@ -297,13 +299,6 @@ void fill_k2_tree(FILE *fp, K2Tree *T) {
 }
 
 int** make_image(FILE *fp, int row, int col) {
-/*
-    fread(&t_count, 1, 1, fp);
-    printf("%d\n", FIRST_IMG_BIT(t_count));
-    printf("%d\n", SECOND_IMG_BIT(t_count));
-    printf("%d\n", THIRD_IMG_BIT(t_count));
-    printf("%d\n", FOURTH_IMG_BIT(t_count));
-*/
 
     // Make a K2Tree
     K2Tree p = (K2Tree)malloc(sizeof(k2node));

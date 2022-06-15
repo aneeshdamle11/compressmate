@@ -4,7 +4,6 @@
 #include "../wavet/wavlet.h"
 #include "../k2t/k2tree.h"
 
-#define SQ_NUM (512)
 
 // Copies image
 void copy_image(int height, int width, RGBTRIPLE to[height][width], RGBTRIPLE from[height][width])
@@ -204,7 +203,18 @@ void encrypt(int height, int width, RGBTRIPLE image[height][width]) {
 void k2c(FILE *fp, int height, int width, RGBTRIPLE image[height][width], char color) {
 
     int i, j;
+    //int dim = get_powerof2_dim(height, width);
     int temp[SQ_NUM][SQ_NUM];         // Image to be compressed
+
+/*
+    int **temp = (int **)malloc(sizeof(int*) * SQ_NUM);
+    for (i = 0; i < SQ_NUM; ++i) {
+        temp[i] = (int*)malloc(sizeof(int) * SQ_NUM);
+        for (j = 0; j < SQ_NUM; ++j) {
+            temp[i][j] = 0;
+        }
+    }
+*/
     for (i = 0; i < SQ_NUM; ++i) {
         for (j = 0; j < SQ_NUM; ++j) {
             temp[i][j] = 0;
@@ -237,7 +247,7 @@ void k2c(FILE *fp, int height, int width, RGBTRIPLE image[height][width], char c
 
     K2Tree p = k2_image_compress(SQ_NUM, SQ_NUM, temp);
     if (!p) {
-        printf("Noooo\n");
+        printf("Unable to malloc k2tree struct\n");
         return;
     }
     int t_count = get_Tnode_count(p->tlist);
@@ -271,7 +281,7 @@ void k2c(FILE *fp, int height, int width, RGBTRIPLE image[height][width], char c
     destroy_Llist(&(p->llist));
     destroy_Tlist(&(p->tlist));
     free(p);
-
+    //free(temp);
 
 }
 
@@ -309,7 +319,7 @@ void decrypt(int height, int width, RGBTRIPLE image[height][width]) {
 
 void decompress(int height, int width, RGBTRIPLE image[height][width]) {
 
-
+#ifdef DECMP
     // Reading file contents
     FILE *fp = fopen("comp3.txt", "rb");
     if (!fp) {
@@ -321,7 +331,10 @@ void decompress(int height, int width, RGBTRIPLE image[height][width]) {
     int **temp = make_image(fp, SQ_NUM, SQ_NUM);
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            image[i][j].rgbtRed = temp[i][j];
+            if (temp[i][j] > 255)
+                image[i][j].rgbtRed = 255;
+            else
+                image[i][j].rgbtRed = temp[i][j];
         }
     }
 
@@ -329,7 +342,10 @@ void decompress(int height, int width, RGBTRIPLE image[height][width]) {
     temp = make_image(fp, SQ_NUM, SQ_NUM);
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            image[i][j].rgbtGreen = temp[i][j];
+            if (temp[i][j] > 255)
+                image[i][j].rgbtGreen = 255;
+            else
+                image[i][j].rgbtGreen = temp[i][j];
         }
     }
 
@@ -337,12 +353,16 @@ void decompress(int height, int width, RGBTRIPLE image[height][width]) {
     temp = make_image(fp, SQ_NUM, SQ_NUM);
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            image[i][j].rgbtBlue = temp[i][j];
+            if (temp[i][j] > 255)
+                image[i][j].rgbtBlue = 255;
+            else
+                image[i][j].rgbtBlue = temp[i][j];
         }
     }
 
     free(temp);
     fclose(fp);
+#endif // DECMP
 
     decrypt(height, width, image);
 
