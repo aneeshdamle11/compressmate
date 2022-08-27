@@ -1,7 +1,7 @@
-image: imagehandler.o imagemodifiers.o wavlet.o k2tree.o Tlist.o Llist.o
-	cc imagehandler.o imagemodifiers.o wavlet.o k2tree.o Tlist.o Llist.o
-imagehandler.o: src/imagehandler.c src/bmp.h
-	cc -c src/imagehandler.c
+image: main.o imagemodifiers.o wavlet.o k2tree.o Tlist.o Llist.o
+	cc main.o imagemodifiers.o wavlet.o k2tree.o Tlist.o Llist.o
+main.o: src/main.c src/bmp.h
+	cc -c src/main.c
 imagemodifiers.o: src/imagemodifiers.c src/imagemodifiers.h src/bmp.h
 	cc -c src/imagemodifiers.c
 wavlet.o: wavet/wavlet.c wavet/wavlet.h

@@ -290,7 +290,7 @@ void compress(int height, int width, RGBTRIPLE image[height][width]) {
 
     encrypt(height, width, image);
 
-    FILE *fp = fopen("comp3.txt", "wb");
+    FILE *fp = fopen("compressed.ad", "wb");
     if (!fp) {
         printf("Unable to access file\n");
         return;
@@ -321,7 +321,7 @@ void decompress(int height, int width, RGBTRIPLE image[height][width]) {
 
 #ifdef DECMP
     // Reading file contents
-    FILE *fp = fopen("comp3.txt", "rb");
+    FILE *fp = fopen("compressed.ad", "rb");
     if (!fp) {
         printf("Unable to access file\n");
         return;
