@@ -28,6 +28,8 @@ int main(int argc, char *argv[]) {
     if (argc != optind + 2)
     {
         printf("Usage: ./a.out [flag] infile outfile\n");
+        printf("-c : encrypt and compress infile and store encrypt as outfile.\n");
+        printf("-d : decrypt-press infile and store it as outfile.\n");
         return 3;
     }
 
